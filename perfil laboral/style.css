@@ -1,0 +1,61 @@
+body {
+    background-color: #f2f4f7;
+    font-family: Arial, sans-serif;
+}
+
+
+.navbar {
+    background-color: #173b57 !important;
+}
+
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+
+h2 {
+    color: #173b57;
+}
+
+
+.list-group-item {
+    padding: 12px;
+}
+
+.list-group-item.active {
+    background-color: #173b57;
+    border-color: #173b57;
+}
+
+
+.progress {
+    height: 8px;
+}
+
+
+.form-control,
+.form-select {
+    padding: 10px;
+}
+
+
+.btn-primary {
+    background-color: #173b57;
+    border-color: #173b57;
+}
+
+.btn-primary:hover {
+    background-color: #245778;
+    border-color: #245778;
+}
+
+
+#estudios,
+#habilidades,
+#cursos,
+#experiencia {
+    padding-top: 15px;
+    border-top: 1px solid #e1e5e9;
+}
