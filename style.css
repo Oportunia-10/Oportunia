@@ -1,0 +1,108 @@
+
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #B2BBDB;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+
+.home-page {
+    width: 100%;
+    max-width: 1100px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 24px clamp(16px, 4vw, 40px);
+    background-color: #B2BBDB;
+}
+
+
+.app-header {
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+
+.app-title {
+    color: #243A63;
+    -webkit-text-stroke: 1px #5E80C8;
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.Logo_Oportunia {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+
+.search-box {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto 28px;
+    overflow: hidden;
+    border: 2px solid #010000;
+    border-radius: 28px;
+    background-color: #B2BBDB;
+}
+
+
+.search-box .input-group-text,
+.search-box .form-control,
+.search-box .btn {
+    border: 0;
+    background-color: transparent;
+    color: #000000;
+}
+
+.search-box .form-control {
+    min-width: 0;
+    font-size: 18px;
+}
+
+.search-box .form-control:focus {
+    background-color: #B2BBDB;
+    color: #000000;
+    box-shadow: none;
+}
+
+.search-box .form-control::placeholder {
+    color: #000000;
+    opacity: 1;
+}
+
+.search-icon {
+    font-size: 25px;
+}
+
+.search-button {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+@media (max-width: 576px) {
+    .home-page {
+        padding: 20px 16px;
+    }
+
+    .app-header {
+        gap: 10px;
+    }
+
+    .accessibility-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .search-box .form-control {
+        font-size: 16px;
+    }
+}
+
+
