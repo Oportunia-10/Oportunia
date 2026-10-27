@@ -265,3 +265,291 @@ body {
 }
 
 
+/* =================================
+   CAPACITACIONES - ESTILOS GENERALES
+================================= */
+
+.capacitaciones {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    color: #243A63;
+    background-color: #B2BBDB;
+    border-radius: 20px;
+}
+
+.cap-header {
+    flex-wrap: wrap;
+}
+
+.cap-volver {
+    color: #243A63;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.cap-titulo {
+    color: #243A63;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: bold;
+}
+
+.cap-buscador .form-control {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 18px;
+    border: 2px solid #CC44DD;
+    border-radius: 30px;
+    background-color: #D6DFF0;
+    color: #243A63;
+    font-size: 16px;
+}
+
+.cap-buscador .form-control::placeholder {
+    color: #243A63;
+    opacity: 1;
+}
+
+.cap-buscador .form-control:focus {
+    border-color: #CC44DD;
+    box-shadow: 0 0 0 3px #CC44DD33;
+}
+
+/* =================================
+   CATEGORÍAS
+================================= */
+
+.cap-subtitulo {
+    color: #243A63;
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: bold;
+}
+
+.cap-categoria {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 52px;
+    padding: 9px 14px;
+    border: 2px solid #CC44DD;
+    border-radius: 30px;
+    background-color: #D6DFF0;
+    color: #243A63;
+    text-decoration: none;
+    font-size: clamp(13px, 2vw, 19px);
+}
+
+.cap-categoria:hover {
+    background-color: #E7ECF7;
+    color: #243A63;
+}
+
+.cap-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #243A63;
+    font-size: 18px;
+}
+
+.cap-flecha {
+    margin-left: auto;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* =================================
+   TARJETAS DE CURSOS
+================================= */
+
+.cap-tarjeta {
+    border: 1px solid #D6DFF0;
+    border-radius: 20px;
+    background-color: #D9D9D9;
+    color: #243A63;
+    overflow-wrap: anywhere;
+}
+
+.cap-tarjeta .card-body {
+    padding: 14px;
+}
+
+.cap-ilustracion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background-color: #D6DFF0;
+    font-size: 38px;
+}
+
+.cap-titulo-curso {
+    min-height: 48px;
+    color: #243A63;
+    font-size: clamp(14px, 2vw, 21px);
+    font-weight: bold;
+}
+
+.cap-datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: #000000;
+    font-size: 13px;
+}
+
+.cap-boton {
+    width: 100%;
+    padding: 9px 5px;
+    border: none;
+    border-radius: 30px;
+    background-color: #1A7AE9;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.cap-boton:hover,
+.cap-boton:focus {
+    background-color: #1268CF;
+    color: #FFFFFF;
+}
+
+/* =================================
+   MI PROGRESO
+================================= */
+
+.cap-panel-progreso {
+    padding: 16px;
+    border-radius: 22px;
+    background-color: #D6DFF0;
+}
+
+.cap-icono-progreso {
+    color: #000000;
+    font-size: 25px;
+}
+
+.cap-nombre-progreso {
+    color: #243A63;
+    font-size: clamp(12px, 1.8vw, 18px);
+}
+
+.cap-porcentaje {
+    flex-shrink: 0;
+    color: #000000;
+    font-size: clamp(13px, 1.8vw, 18px);
+}
+
+.cap-barra {
+    height: 13px;
+    border-radius: 20px;
+    background-color: #B2BBDB;
+    overflow: hidden;
+}
+
+.cap-barra .progress-bar {
+    border-radius: 20px;
+    background-color: #1A7AE9;
+}
+
+/* =================================
+   DISEÑO RESPONSIVE
+================================= */
+
+.capacitaciones,
+.capacitaciones * {
+    box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+
+    .capacitaciones {
+        padding: 16px !important;
+        border-radius: 16px;
+    }
+
+    .cap-header {
+        gap: 10px !important;
+    }
+
+    .cap-titulo {
+        font-size: 24px;
+    }
+
+    .cap-categoria {
+        min-height: 46px;
+        padding: 7px 9px;
+        gap: 7px;
+        font-size: 12px;
+    }
+
+    .cap-icono {
+        width: 29px;
+        height: 29px;
+        font-size: 15px;
+    }
+
+    .cap-flecha {
+        font-size: 21px;
+    }
+
+    .cap-tarjeta .card-body {
+        padding: 9px;
+    }
+
+    .cap-ilustracion {
+        min-height: 55px;
+        font-size: 30px;
+    }
+
+    .cap-titulo-curso {
+        min-height: 55px;
+        font-size: 14px;
+    }
+
+    .cap-datos {
+        flex-direction: column;
+        gap: 5px;
+        font-size: 11px;
+    }
+
+    .cap-boton {
+        font-size: 12px;
+    }
+
+    .cap-panel-progreso {
+        padding: 10px;
+    }
+
+    .cap-icono-progreso {
+        font-size: 20px;
+    }
+
+    .cap-nombre-progreso,
+    .cap-porcentaje {
+        font-size: 12px;
+    }
+
+    .cap-barra {
+        height: 11px;
+    }
+}
+
+@media (min-width: 768px) {
+
+    .capacitaciones {
+        padding: 28px !important;
+    }
+
+    .cap-tarjeta .card-body {
+        padding: 20px;
+    }
+}
+
