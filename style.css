@@ -220,6 +220,20 @@ body {
         font-size: 15px;
     }
 }
+@media (max-width: 400px) {
+    .ajustes-container {
+        padding: 12px 8px;
+    }
+
+    .ajustes-panel {
+        padding: 18px 10px;
+    }
+
+    .opcion-ajuste {
+        font-size: 14px;
+        gap: 8px;
+    }
+}
 
 .opciones-texto {
     display: flex;
