@@ -1,101 +1,167 @@
-﻿
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Bienvenido | Oportunia</title>
+    <title>Oportunia - Inicio</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-    <style>
-        body {
-            background-color: #f1f6ff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .welcome-card {
-            max-width: 500px;
-            width: 90%;
-            border: none;
-            border-radius: 20px;
-        }
-
-        .brand {
-            color: #2878c7;
-            font-size: 38px;
-            font-weight: bold;
-        }
-
-        .btn-oportunia {
-            background-color: #2878c7;
-            color: white;
-            border-radius: 10px;
-            padding: 12px;
-        }
-
-        .btn-oportunia:hover {
-            background-color: #1d5f9e;
-            color: white;
-        }
-
-        .btn-register {
-            border: 2px solid #2878c7;
-            color: #2878c7;
-            border-radius: 10px;
-            padding: 12px;
-        }
-
-        .btn-register:hover {
-            background-color: #2878c7;
-            color: white;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div class="card welcome-card shadow-lg p-4 p-md-5 text-center">
+    <main class="home-page container-fluid">
 
-        <div class="card-body">
+        
+        <header class="app-header d-flex justify-content-center align-items-center">
 
-            <h1 class="brand mb-3">Oportunia</h1>
+            <h1 class="app-title mb-0">Oportunia</h1>
 
-            <h3 class="mb-3">┬íBienvenido!</h3>
+            
+            <img
+                src="./img/logo de Oportunia.png"
+                alt="Logo de Oportunia"
+                class="Logo_Oportunia"
+            >
 
-            <p class="text-secondary mb-4">
-                Un espacio pensado para conectar talentos
-                con oportunidades laborales.
-            </p>
+        </header>
 
-            <p class="mb-3">
-                ┬┐C├│mo quer├®s continuar?
-            </p>
+        
+        <form class="search-box input-group" role="search">
 
-            <div class="d-grid gap-3">
+            <span class="input-group-text search-icon" aria-hidden="true">
+                ⌕
+            </span>
 
-    <a href="Oportunia/Inicio%20de%20sesi%C3%B3n.html" class="btn btn-oportunia">
-        Iniciar sesi├│n
+            <input
+                type="search"
+                class="form-control"
+                placeholder="Buscar..."
+                aria-label="Buscar"
+            >
+
+            <button
+                class="btn search-button"
+                type="submit"
+                aria-label="Buscar"
+            >
+                &gt;
+            </button>
+
+        </form>
+
+
+<nav class="main-menu" aria-label="Menú principal">
+    <a href="#" class="menu-item active">
+        <span>⌂</span>
+        <span>Inicio</span>
+        <span class="arrow">›</span>
     </a>
 
-    <a href="Oportunia/registro.html" class="btn btn-register">
-        Registrarse
+    <a href="perfil laboral/perfillaboral.html" class="menu-item">
+        <span>▣</span>
+        <span>Perfil laboral</span>
+        <span class="arrow">›</span>
     </a>
 
-</div>
+    <a href="#" class="menu-item">
+        <span>▹</span>
+        <span>Shorts</span>
+        <span class="arrow">›</span>
+    </a>
 
-            <p class="text-secondary mt-4 small">
-                Oportunia - Inclusi├│n laboral para todos
-            </p>
+    <a href="ajustes.html" class="menu-item">
+        <span>⚙</span>
+        <span>Ajustes</span>
+        <span class="arrow">›</span>
+    </a>
 
-        </div>
+    <a href="#" class="menu-item">
+        <span>✣</span>
+        <span>Modo IA</span>
+        <span class="arrow">›</span>
+    </a>
+</nav>
+
+
+<section class="quick-access">
+    <h2>Accesos rápidos</h2>
+
+    <div class="quick-grid">
+        <a href="#" class="quick-card">
+            <span>✉</span>
+            <span>Mensajes</span>
+        </a>
+
+        <a href="#" class="quick-card">
+            <span>♙</span>
+            <span>Cuenta</span>
+        </a>
+
+        <a href="#" class="quick-card">
+            <span>▤</span>
+            <span>Historial</span>
+        </a>
+    </div>
+</section>
+
+
+<section class="recommendations">
+    <h2>Podría interesarte</h2>
+
+    <div class="recommendation-grid">
+
+        
+        <article class="recommendation-card card">
+            <div class="card-body">
+                <div class="recommendation-icon" aria-hidden="true">
+                    <i class="bi bi-lightbulb"></i>
+                </div>
+
+                <h3 class="card-title">Consejos</h3>
+
+                <p class="card-text">
+                    Tips para buscar empleo y preparar entrevistas.
+                </p>
+
+                <a href="#" class="btn recommendation-button">
+                    Ver más
+                </a>
+            </div>
+        </article>
+
+        
+        <article class="recommendation-card card">
+            <div class="card-body">
+                <div class="recommendation-icon" aria-hidden="true">
+                    <i class="bi bi-briefcase"></i>
+                </div>
+
+                <h3 class="card-title">Profesiones</h3>
+
+                <p class="card-text">
+                    Conocé trabajos, tareas y capacitaciones.
+                </p>
+
+                <a href="#" class="btn recommendation-button">
+                    Ver más
+                </a>
+            </div>
+        </article>
 
     </div>
+</section>
+
+    </main>
 
 </body>
 </html>
