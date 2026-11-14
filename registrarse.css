@@ -1,0 +1,234 @@
+
+/* CONFIGURACIÓN GENERAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef0f4;
+    min-height: 100vh;
+}
+
+/* PÁGINA */
+
+.pagina {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px 20px;
+}
+
+/* FORMULARIO CENTRAL */
+
+.registro {
+    width: 100%;
+    max-width: 560px;
+
+    background: #ffffff;
+
+    padding: 35px 45px;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+/* LOGO */
+
+.encabezado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.encabezado h1 {
+    font-size: 36px;
+    font-weight: 600;
+    color: #354d91;
+    margin: 0;
+}
+
+.icono-accesibilidad {
+    width: 35px;
+    height: 35px;
+    color: #354d91;
+}
+
+/* TÍTULO */
+
+.registro h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+    color: #333d56;
+
+    margin-bottom: 12px;
+}
+
+/* INICIAR SESIÓN */
+
+.texto-login {
+    text-align: center;
+    color: #626b7c;
+    font-size: 15px;
+
+    margin-bottom: 25px;
+}
+
+.texto-login a {
+    color: #394f9c;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* CAMPOS */
+
+.campo {
+    width: 100%;
+
+    background: #f8f9fc;
+    border: 1px solid #d4d8e1;
+    border-radius: 6px;
+
+    padding: 9px 12px;
+    margin-bottom: 13px;
+}
+
+.campo label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4c5870;
+}
+
+.campo input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    font-size: 14px;
+    color: #35415a;
+    padding: 3px 0;
+}
+
+.campo input::placeholder {
+    color: #8992a3;
+}
+
+/* BOTÓN REGISTRARSE */
+
+.btn-registrarse {
+    width: 100%;
+    background: #465cae;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    padding: 13px;
+    margin-top: 7px;
+
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-registrarse:hover {
+    background: #35478e;
+}
+
+/* MENSAJE */
+
+#mensaje {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* SEPARADOR */
+
+.separador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 22px 0 17px;
+}
+
+.separador span {
+    flex: 1;
+    height: 1px;
+    background: #aeb6c7;
+}
+
+.separador p {
+    color: #59657c;
+    font-size: 13px;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* GOOGLE Y APPLE */
+
+.btn-social {
+    width: 100%;
+    background: #f8f9fc;
+    color: #46536d;
+
+    border: 1px solid #d4d9e4;
+    border-radius: 8px;
+
+    padding: 12px;
+    margin-bottom: 10px;
+
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-social:hover {
+    background: #edf0f7;
+}
+
+.google-icon {
+    color: #4285F4;
+    margin-right: 8px;
+}
+
+.apple-icon {
+    color: #333c50;
+    margin-right: 8px;
+}
+
+/* CELULARES */
+
+@media (max-width: 600px) {
+
+    .pagina {
+        padding: 18px 12px;
+    }
+
+    .registro {
+        padding: 30px 22px;
+    }
+
+    .encabezado h1 {
+        font-size: 31px;
+    }
+
+    .registro h2 {
+        font-size: 24px;
+    }
+
+}
