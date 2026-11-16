@@ -1,0 +1,149 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #eef0f4;
+    color: #30354a;
+}
+
+.pagina-login {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 560px;
+    background-color: #ffffff;
+    padding: 40px 45px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo {
+    color: #465cae;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.login-header h2 {
+    font-size: 27px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #30354a;
+}
+
+.login-header p {
+    color: #777e8e;
+    font-size: 15px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #30354a;
+    margin-bottom: 9px;
+}
+
+.form-control {
+    padding: 13px 15px;
+    border: 1px solid #d5d9e2;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+.form-control:focus {
+    border-color: #465cae;
+    box-shadow: 0 0 0 0.2rem rgba(70, 92, 174, 0.15);
+}
+
+.recuperar {
+    text-align: right;
+    margin-bottom: 25px;
+}
+
+.recuperar a {
+    color: #465cae;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.recuperar a:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    background-color: #465cae;
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-login:hover {
+    background-color: #35488f;
+    color: white;
+}
+
+.registro-link {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #e5e7ed;
+}
+
+.registro-link p {
+    color: #777e8e;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.btn-registro {
+    color: #465cae;
+    background-color: white;
+    border: 2px solid #465cae;
+    padding: 11px;
+    border-radius: 9px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-registro:hover {
+    background-color: #465cae;
+    color: white;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 576px) {
+
+    .pagina-login {
+        padding: 20px 15px;
+    }
+
+    .login-container {
+        padding: 30px 23px;
+    }
+
+    .logo {
+        font-size: 28px;
+    }
+
+    .login-header h2 {
+        font-size: 23px;
+    }
+}
