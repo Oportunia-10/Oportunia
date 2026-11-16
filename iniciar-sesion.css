@@ -1,4 +1,3 @@
-
 * {
     box-sizing: border-box;
 }
@@ -128,7 +127,6 @@ body {
     color: white;
 }
 
-/* Adaptación para celulares */
 @media (max-width: 576px) {
 
     .pagina-login {
