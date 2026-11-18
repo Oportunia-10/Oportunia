@@ -89,17 +89,20 @@
                         required>
                 </div>
 
-                <button type="submit" class="btn-registrarse">
-                    
-                    <a href="index.html" class="btn-registrarse">
+              <button type="submit" class="btn-registrarse">
     Registrarse
-</a>
-                </button>
-
+</button>
 
 
 
             </form>
+            <script>
+document.getElementById("formulario").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    window.location.href = "home.html";
+});
+</script>
 
             <p id="mensaje"></p>
 
