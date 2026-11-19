@@ -121,3 +121,26 @@ footer {
         font-size: 22px;
     }
 }
+
+
+/* FLECHA PARA VOLVER AL HOME */
+
+.navbar .container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+}
+
+.volver-home {
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 0;
+    padding: 0;
+}
+
+.navbar-brand {
+    margin: 0;
+}

@@ -269,6 +269,15 @@ body {
    CAPACITACIONES - ESTILOS GENERALES
 ================================= */
 
+.volver-home {
+    color: rgb(17, 12, 12);
+    font-size: 35px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 0;
+    padding: 0;
+}
+
 .capacitaciones {
     width: 100%;
     max-width: 900px;
