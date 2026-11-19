@@ -1,0 +1,394 @@
+
+/* CONFIGURACIÓN GENERAL */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #F2F5FF;
+    color: #243A63;
+    font-family: Arial, sans-serif;
+}
+
+.postularse-page {
+    max-width: 1400px;
+    margin: auto;
+    padding: 0 0 100px;
+}
+
+
+/* ENCABEZADO */
+
+.app-header {
+    background: #D6DFF0;
+    padding: 20px 5%;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.brand h1 {
+    font-family: Georgia, serif;
+    font-size: 35px;
+    font-weight: bold;
+    margin: 0;
+    color: #243A63;
+}
+
+.logo-oportunia {
+    width: 75px;
+    height: auto;
+    object-fit: contain;
+}
+
+
+/* BUSCADOR */
+
+.search-box {
+    border: 2px solid #8397C5;
+    border-radius: 30px;
+    overflow: hidden;
+    background: #F4F6FF;
+}
+
+.search-box .input-group-text,
+.search-box .form-control,
+.search-button {
+    background: transparent;
+    border: none;
+    color: #243A63;
+}
+
+.search-box .form-control:focus {
+    box-shadow: none;
+}
+
+.search-button {
+    font-size: 24px;
+    padding: 5px 20px;
+}
+
+
+/* TÍTULO */
+
+.page-title {
+    padding: 28px 15px 20px;
+}
+
+.page-title h2 {
+    font-family: Georgia, serif;
+    font-size: 48px;
+    font-weight: bold;
+    color: #243A63;
+}
+
+.page-title p {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    margin: 0;
+}
+
+
+/* PRESENTACIÓN */
+
+.intro-card {
+    margin: 0 4% 22px;
+    padding: 20px;
+    border: 2px solid #8298D0;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: #F7F8FF;
+}
+
+.intro-image {
+    position: relative;
+    min-width: 32%;
+    text-align: center;
+    font-size: 110px;
+    color: #315CA8;
+}
+
+.check-icon {
+    position: absolute;
+    right: 10%;
+    bottom: 5px;
+    color: #A45CCB;
+    font-size: 48px;
+    background: white;
+    border-radius: 50%;
+}
+
+.intro-text h3 {
+    font-size: 29px;
+    font-weight: bold;
+    color: #243A63;
+}
+
+.intro-text p {
+    font-size: 21px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+
+/* TARJETAS DE TRABAJO */
+
+.jobs-section {
+    padding: 0 4%;
+}
+
+.job-card {
+    height: 100%;
+    min-height: 235px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px;
+    border: 2px solid #CCD6F0;
+    border-radius: 25px;
+    background: #F9FAFF;
+}
+
+.job-icon {
+    flex-shrink: 0;
+    width: 95px;
+    height: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #DCE6FF;
+    color: #234B9B;
+    font-size: 48px;
+}
+
+.job-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.job-info h3 {
+    font-size: 23px;
+    font-weight: bold;
+    color: #243A63;
+    margin-bottom: 5px;
+}
+
+.job-info p {
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.company {
+    color: #304A7D;
+}
+
+.company i {
+    margin-right: 5px;
+}
+
+
+/* VER LUGAR DE TRABAJO */
+
+.workplace-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    margin: 5px 0 8px;
+    border-top: 1px solid #CCD6F0;
+    color: #2478D8;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.workplace-link:hover {
+    color: #174C9B;
+}
+
+
+/* BOTÓN POSTULARSE */
+
+.apply-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 30px;
+    background: #2685ED;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.apply-button:hover {
+    background: #1768C5;
+    color: white;
+}
+
+
+/* CONSEJO */
+
+.tip-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin: 28px 4%;
+    padding: 18px;
+    border-radius: 50px;
+    background: #D6E1FF;
+    color: #243A63;
+}
+
+.tip-box i {
+    font-size: 42px;
+    color: #2478D8;
+}
+
+.tip-box p {
+    font-size: 17px;
+    margin: 0;
+}
+
+
+
+
+
+
+
+/* DISEÑO RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .page-title h2 {
+        font-size: 36px;
+    }
+
+    .page-title p {
+        font-size: 19px;
+    }
+
+    .intro-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .intro-image {
+        font-size: 75px;
+    }
+
+    .intro-text h3 {
+        font-size: 23px;
+    }
+
+    .intro-text p {
+        font-size: 17px;
+    }
+
+    .job-card {
+        min-height: auto;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .job-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 34px;
+    }
+
+    .job-info h3 {
+        font-size: 18px;
+    }
+
+    .job-info p {
+        font-size: 14px;
+    }
+
+    .workplace-link {
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+
+    .apply-button {
+        font-size: 15px;
+        padding: 10px;
+    }
+
+    .tip-box {
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    .tip-box p {
+        font-size: 14px;
+    }
+
+    .bottom-item {
+        font-size: 12px;
+    }
+
+    .bottom-item i {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .job-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .job-info {
+        width: 100%;
+    }
+
+    .workplace-link {
+        justify-content: center;
+    }
+}
+
+/* TÍTULO Y FLECHA PARA VOLVER */
+
+.page-title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 60px 20px;
+}
+
+.title-content {
+    text-align: center;
+}
+
+.back-button {
+    position: absolute;
+    left: 4%;
+    top: 35px;
+    color: #243A63;
+    font-size: 35px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-button:hover {
+    color: #2685ED;
+}
