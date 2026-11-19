@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -59,14 +60,25 @@
                 <a href="iniciar-sesion.html">Iniciar sesión</a>
             </p>
 
-            <form id="formulario">
+            <form id="formulario" action="/registrarse" method="POST">
 
                 <div class="campo">
                     <label for="nombre">Nombre</label>
                     <input
                         type="text"
                         id="nombre"
+                        name="nombre"
                         placeholder="Ingresa tu nombre"
+                        required>
+                </div>
+
+                <div class="campo">
+                    <label for="apellido">Apellido</label>
+                    <input
+                        type="text"
+                        id="apellido"
+                        name="apellido"
+                        placeholder="Ingresa tu apellido"
                         required>
                 </div>
 
@@ -75,6 +87,7 @@
                     <input
                         type="email"
                         id="correo"
+                        name="correo"
                         placeholder="Ingresa tu correo"
                         required>
                 </div>
@@ -84,25 +97,17 @@
                     <input
                         type="password"
                         id="contrasena"
+                        name="contrasena"
                         placeholder="Ingresa tu contraseña"
                         minlength="8"
                         required>
                 </div>
 
-              <button type="submit" class="btn-registrarse">
-    Registrarse
-</button>
-
-
+                <button type="submit" class="btn-registrarse">
+                    Registrarse
+                </button>
 
             </form>
-            <script>
-document.getElementById("formulario").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    window.location.href = "home.html";
-});
-</script>
 
             <p id="mensaje"></p>
 
@@ -132,28 +137,5 @@ document.getElementById("formulario").addEventListener("submit", function(event)
 
     </main>
 
-    <script>
-        const formulario = document.getElementById("formulario");
-        const mensaje = document.getElementById("mensaje");
-
-        formulario.addEventListener("submit", function(e) {
-
-            e.preventDefault();
-
-            if (!formulario.checkValidity()) {
-                formulario.reportValidity();
-                return;
-            }
-
-            mensaje.textContent =
-                "¡Registro completado correctamente!";
-
-            mensaje.style.color = "#3154a4";
-
-            formulario.reset();
-        });
-    </script>
-
 </body>
 </html>
-
