@@ -163,6 +163,181 @@ def home():
             conexion.close()
 
 
+@app.route("/capacitaciones.html")
+def capacitaciones():
+    usuario_id = session.get("usuario_id")
+
+    if not usuario_id:
+        return redirect("/iniciar-sesion")
+
+    conexion = None
+    cursor = None
+
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+
+        cursos_iniciales = [
+            (
+                usuario_id,
+                "Cómo crear tu CV",
+                "Aprendé a preparar tu currículum."
+            ),
+            (
+                usuario_id,
+                "Preparación para entrevistas",
+                "Aprendé a prepararte para una entrevista laboral."
+            )
+        ]
+
+        consulta_insertar = """
+            INSERT IGNORE INTO capacitaciones
+            (usuario_id, nombre_capacitacion, descripcion)
+            VALUES (%s, %s, %s)
+        """
+
+        cursor.executemany(consulta_insertar, cursos_iniciales)
+        conexion.commit()
+
+        consulta = """
+            SELECT id, nombre_capacitacion, descripcion,
+                   estado, progreso
+            FROM capacitaciones
+            WHERE usuario_id = %s
+            ORDER BY id
+        """
+
+        cursor.execute(consulta, (usuario_id,))
+        cursos = cursor.fetchall()
+
+        with open(
+            os.path.join(app.root_path, "capacitaciones.html"),
+            "r",
+            encoding="utf-8"
+        ) as archivo:
+            contenido = archivo.read()
+
+        return render_template_string(
+            contenido,
+            cursos=cursos
+        )
+
+    except mysql.connector.Error as error:
+        print("Error al cargar capacitaciones:", error)
+        return "No se pudieron cargar las capacitaciones."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+@app.route("/capacitaciones/<int:curso_id>/comenzar", methods=["POST"])
+def comenzar_capacitacion(curso_id):
+    usuario_id = session.get("usuario_id")
+
+    if not usuario_id:
+        return redirect("/iniciar-sesion")
+
+    conexion = None
+    cursor = None
+
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+
+        consulta = """
+            UPDATE capacitaciones
+            SET estado = 'en_curso',
+                fecha_inicio = COALESCE(fecha_inicio, CURDATE())
+            WHERE id = %s
+              AND usuario_id = %s
+              AND estado = 'pendiente'
+        """
+
+        cursor.execute(consulta, (curso_id, usuario_id))
+        conexion.commit()
+
+        return redirect("/capacitaciones.html")
+
+    except mysql.connector.Error as error:
+        print("Error al comenzar capacitación:", error)
+        return "No se pudo comenzar la capacitación."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+@app.route("/capacitaciones/<int:curso_id>/progreso", methods=["POST"])
+def actualizar_progreso(curso_id):
+    usuario_id = session.get("usuario_id")
+
+    if not usuario_id:
+        return redirect("/iniciar-sesion")
+
+    try:
+        progreso = int(request.form.get("progreso", -1))
+    except ValueError:
+        return "El progreso debe ser un número."
+
+    if progreso < 0 or progreso > 100:
+        return "El progreso debe estar entre 0 y 100."
+
+    conexion = None
+    cursor = None
+
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+
+        consulta = """
+            UPDATE capacitaciones
+            SET progreso = %s,
+                estado = CASE
+                    WHEN %s = 100 THEN 'completada'
+                    WHEN %s > 0 THEN 'en_curso'
+                    ELSE 'pendiente'
+                END,
+                fecha_inicio = CASE
+                    WHEN %s > 0 THEN COALESCE(fecha_inicio, CURDATE())
+                    ELSE fecha_inicio
+                END,
+                fecha_completado = CASE
+                    WHEN %s = 100 THEN CURDATE()
+                    ELSE NULL
+                END
+            WHERE id = %s AND usuario_id = %s
+        """
+
+        cursor.execute(
+            consulta,
+            (
+                progreso,
+                progreso,
+                progreso,
+                progreso,
+                progreso,
+                curso_id,
+                usuario_id
+            )
+        )
+
+        conexion.commit()
+
+        return redirect("/capacitaciones.html")
+
+    except mysql.connector.Error as error:
+        print("Error al actualizar progreso:", error)
+        return "No se pudo actualizar el progreso."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
 @app.route("/<path:archivo>")
 def mostrar_archivos(archivo):
     extensiones_permitidas = (
