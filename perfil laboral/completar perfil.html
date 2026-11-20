@@ -8,31 +8,28 @@
     <title>Oportunia - Completar perfil</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/perfil-estatico/style.css">
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark">
-    <div class="container">
+    <nav class="navbar navbar-dark">
+        <div class="container">
 
-        <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center">
 
-            <!-- Flecha para volver a otra pagina -->
-            <a href="perfillaboral.html" class="btn btn-outline-light me-3">
-                ←
-            </a>
+                <a href="/perfil-estatico/perfillaboral.html" class="btn btn-outline-light me-3">
+                    ←
+                </a>
 
-            <!-- Logo Oportunia -->
-            <a class="navbar-brand mb-0" href="../index.html">
-                Oportunia
-            </a>
+                <a class="navbar-brand mb-0" href="../index.html">
+                    Oportunia
+                </a>
+
+            </div>
 
         </div>
-
-    </div>
-</nav>
-
+    </nav>
 
     <main class="container py-4">
         <div class="row g-4">
@@ -186,7 +183,7 @@
 
                         </form>
 
-                        <a href="perfillaboral.html" class="btn btn-secondary w-100 mt-2">
+                        <a href="/perfil-estatico/perfillaboral.html" class="btn btn-secondary w-100 mt-2">
                             Volver al perfil
                         </a>
 
@@ -200,6 +197,52 @@
     <footer class="text-center py-3">
         <p class="mb-0">Oportunia - Tu futuro laboral</p>
     </footer>
+<script>
+    const formulario = document.getElementById("formularioPerfil");
+
+    formulario.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const datos = {
+            nombre: document.getElementById("nombre").value,
+            apellido: document.getElementById("apellido").value,
+            edad: document.getElementById("edad").value,
+            ciudad: document.getElementById("ciudad").value,
+            contacto: document.getElementById("contacto").value,
+            email: document.getElementById("email").value,
+            telefono: document.getElementById("telefono").value,
+
+            nivelEstudios: document.getElementById("nivelEstudios").value,
+            habilidadesTexto: document.getElementById("habilidadesTexto").value,
+            cursosTexto: document.getElementById("cursosTexto").value,
+            experienciaTexto: document.getElementById("experienciaTexto").value
+        };
+
+        try {
+            const respuesta = await fetch("/guardar-perfil", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datos)
+            });
+
+            const resultado = await respuesta.json();
+
+            if (respuesta.ok) {
+                alert("¡Perfil guardado correctamente!");
+                formulario.reset();
+            } else {
+                alert("Error al guardar: " + resultado.error);
+            }
+
+        } catch (error) {
+            alert("No se pudo conectar con el servidor.");
+            console.error(error);
+        }
+    });
+</script>
+
 
 </body>
 </html>
