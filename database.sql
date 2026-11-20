@@ -1,132 +1,129 @@
--- MySQL dump 10.13  Distrib 8.0.46, for Win64 (x86_64)
---
--- Host: localhost    Database: oportunia
--- ------------------------------------------------------
--- Server version	8.0.46
+-- Script de instalación portable para Oportunia
+-- Ejecutar completo en MySQL Workbench.
+CREATE DATABASE IF NOT EXISTS oportunia
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+USE oportunia;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS perfil;
+DROP TABLE IF EXISTS estudios;
+DROP TABLE IF EXISTS habilidades;
+DROP TABLE IF EXISTS cursos;
+DROP TABLE IF EXISTS experiencia_laboral;
+DROP TABLE IF EXISTS ajustes;
+DROP TABLE IF EXISTS capacitaciones;
+DROP TABLE IF EXISTS postulaciones;
+DROP TABLE IF EXISTS perfil_laboral;
+DROP TABLE IF EXISTS usuarios;
+SET FOREIGN_KEY_CHECKS = 1;
 
---
--- Table structure for table `ajustes`
---
+CREATE TABLE usuarios (
+    id INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    fecha_registro TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_usuarios_email (email)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `ajustes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ajustes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `notificaciones` tinyint(1) DEFAULT '1',
-  `modo_oscuro` tinyint(1) DEFAULT '0',
-  `idioma` varchar(30) DEFAULT 'Español',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `ajustes_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE ajustes (
+    id INT NOT NULL AUTO_INCREMENT,
+    usuario_id INT NOT NULL,
+    notificaciones TINYINT(1) DEFAULT 1,
+    modo_oscuro TINYINT(1) DEFAULT 0,
+    idioma VARCHAR(30) DEFAULT 'Español',
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_ajustes_usuario (usuario_id),
+    CONSTRAINT fk_ajustes_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `capacitaciones`
---
+CREATE TABLE postulaciones (
+    id INT NOT NULL AUTO_INCREMENT,
+    usuario_id INT NOT NULL,
+    puesto VARCHAR(150) NOT NULL,
+    empresa VARCHAR(150) DEFAULT NULL,
+    fecha_postulacion TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('enviada','en_revision','aceptada','rechazada') DEFAULT 'enviada',
+    PRIMARY KEY (id),
+    KEY idx_postulaciones_usuario (usuario_id),
+    CONSTRAINT fk_postulaciones_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `capacitaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `capacitaciones` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `nombre_capacitacion` varchar(150) NOT NULL,
-  `descripcion` text,
-  `estado` enum('pendiente','en_curso','completada') DEFAULT 'pendiente',
-  `progreso` tinyint unsigned DEFAULT '0',
-  `fecha_inicio` date DEFAULT NULL,
-  `fecha_completado` date DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uq_usuario_capacitacion` (`usuario_id`,`nombre_capacitacion`),
-  CONSTRAINT `capacitaciones_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE capacitaciones (
+    id INT NOT NULL AUTO_INCREMENT,
+    usuario_id INT NOT NULL,
+    nombre_capacitacion VARCHAR(150) NOT NULL,
+    descripcion TEXT,
+    estado ENUM('pendiente','en_curso','completada') DEFAULT 'pendiente',
+    progreso TINYINT UNSIGNED DEFAULT 0,
+    fecha_inicio DATE DEFAULT NULL,
+    fecha_completado DATE DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_usuario_capacitacion (usuario_id,nombre_capacitacion),
+    CONSTRAINT fk_capacitaciones_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `perfil_laboral`
---
+CREATE TABLE perfil_laboral (
+    id INT NOT NULL AUTO_INCREMENT,
+    usuario_id INT NOT NULL,
+    telefono VARCHAR(30) DEFAULT NULL,
+    direccion VARCHAR(150) DEFAULT NULL,
+    estudios TEXT,
+    experiencia TEXT,
+    habilidades TEXT,
+    edad INT DEFAULT NULL,
+    ciudad VARCHAR(100) DEFAULT NULL,
+    medio_contacto ENUM('email','telefono','ambos') DEFAULT NULL,
+    nivel_estudios VARCHAR(50) DEFAULT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_perfil_usuario (usuario_id),
+    CONSTRAINT fk_perfil_laboral_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `perfil_laboral`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `perfil_laboral` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `telefono` varchar(30) DEFAULT NULL,
-  `direccion` varchar(150) DEFAULT NULL,
-  `estudios` text,
-  `experiencia` text,
-  `habilidades` text,
-  `edad` int DEFAULT NULL,
-  `ciudad` varchar(100) DEFAULT NULL,
-  `medio_contacto` enum('email','telefono','ambos') DEFAULT NULL,
-  `nivel_estudios` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `perfil_laboral_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Tablas compatibles con el módulo Perfil anterior
+CREATE TABLE perfil (
+    id INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    edad INT,
+    ciudad VARCHAR(100),
+    email VARCHAR(150),
+    telefono VARCHAR(30),
+    contacto_preferido VARCHAR(30),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `postulaciones`
---
+CREATE TABLE estudios (
+    id INT NOT NULL AUTO_INCREMENT,
+    perfil_id INT NOT NULL,
+    nivel_educativo VARCHAR(100),
+    PRIMARY KEY (id),
+    CONSTRAINT fk_estudios_perfil FOREIGN KEY (perfil_id) REFERENCES perfil(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `postulaciones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `postulaciones` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `puesto` varchar(150) NOT NULL,
-  `empresa` varchar(150) DEFAULT NULL,
-  `fecha_postulacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `estado` enum('enviada','en_revision','aceptada','rechazada') DEFAULT 'enviada',
-  PRIMARY KEY (`id`),
-  KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `postulaciones_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE habilidades (
+    id INT NOT NULL AUTO_INCREMENT,
+    perfil_id INT NOT NULL,
+    habilidad VARCHAR(150),
+    PRIMARY KEY (id),
+    CONSTRAINT fk_habilidades_perfil FOREIGN KEY (perfil_id) REFERENCES perfil(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `usuarios`
---
+CREATE TABLE cursos (
+    id INT NOT NULL AUTO_INCREMENT,
+    perfil_id INT NOT NULL,
+    nombre_curso VARCHAR(200),
+    PRIMARY KEY (id),
+    CONSTRAINT fk_cursos_perfil FOREIGN KEY (perfil_id) REFERENCES perfil(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuarios` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2026-11-19 23:50:41
+CREATE TABLE experiencia_laboral (
+    id INT NOT NULL AUTO_INCREMENT,
+    perfil_id INT NOT NULL,
+    descripcion TEXT,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_experiencia_perfil FOREIGN KEY (perfil_id) REFERENCES perfil(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

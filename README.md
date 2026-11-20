@@ -53,19 +53,32 @@ Oportunia es una plataforma web orientada a facilitar el acceso a oportunidades 
 ## Configuración de la base de datos
 
 1. Abrir MySQL Workbench.
-2. Crear una base de datos llamada oportunia.
-3. Importar el archivo database.sql.
-4. Crear un archivo .env en la carpeta principal con las variables DB_HOST, DB_USER, DB_PASSWORD, DB_NAME y FLASK_SECRET_KEY.
+2. Abrir e ejecutar el archivo `database.sql` completo.
+3. Copiar `.env.example` como `.env` y configurar las credenciales de MySQL.
+
+Ejemplo:
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=tu_clave
+DB_NAME=oportunia
+FLASK_SECRET_KEY=una_clave_segura
+```
 
 ## Ejecutar el proyecto
 
-Con el entorno virtual activado y MySQL funcionando:
+Desde la carpeta principal:
 
-   python app.py
+```powershell
+pip install -r requirements.txt
+python app.py
+```
 
-Abrir en el navegador:
+Abrir: http://127.0.0.1:5000
 
-http://127.0.0.1:5000
+No es necesario ejecutar el servidor dentro de `backend/`: el sistema está integrado en `app.py`.
 
 ## Repositorio
 

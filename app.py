@@ -1,5 +1,4 @@
-﻿
-from flask import Flask, request, redirect, send_from_directory, session, render_template_string
+﻿from flask import Flask, request, redirect, send_from_directory, session, render_template_string, jsonify
 import mysql.connector
 from mysql.connector import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,7 +13,7 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "clave-local-oportunia")
 def conectar_db():
     return mysql.connector.connect(
         host=os.getenv("DB_HOST", "127.0.0.1"),
-        port=3306,
+        port=int(os.getenv("DB_PORT", 3306)),
         user=os.getenv("DB_USER"),
         password=os.getenv("DB_PASSWORD"),
         database=os.getenv("DB_NAME"),
@@ -590,6 +589,157 @@ def mostrar_archivos(archivo):
         return "Archivo no encontrado", 404
 
     return send_from_directory(app.root_path, archivo)
+
+
+@app.route("/perfil.html")
+def perfil():
+    if "usuario_id" not in session:
+        return redirect("/iniciar-sesion.html")
+
+    conexion = None
+    cursor = None
+
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+
+        cursor.execute(
+            "SELECT nombre, apellido, email FROM usuarios WHERE id = %s",
+            (session["usuario_id"],)
+        )
+        usuario = cursor.fetchone()
+
+        if not usuario:
+            session.clear()
+            return redirect("/iniciar-sesion.html")
+
+        with open("perfil.html", "r", encoding="utf-8") as archivo:
+            contenido = archivo.read()
+
+        return render_template_string(
+            contenido,
+            nombre=usuario[0],
+            apellido=usuario[1],
+            email=usuario[2]
+        )
+
+    except mysql.connector.Error as error:
+        print("Error al cargar perfil:", error)
+        return "No se pudo cargar el perfil."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+@app.route("/cerrar-sesion")
+def cerrar_sesion():
+    session.clear()
+    return redirect("/iniciar-sesion")
+
+
+@app.route("/perfil-laboral")
+@app.route("/perfil-laboral/perfillaboral.html")
+def perfil_laboral():
+    usuario_id = session.get("usuario_id")
+    if not usuario_id:
+        return redirect("/iniciar-sesion")
+
+    conexion = None
+    cursor = None
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+        cursor.execute("SELECT * FROM perfil_laboral WHERE usuario_id = %s", (usuario_id,))
+        perfil = cursor.fetchone()
+        columns = [item[0] for item in cursor.description] if cursor.description else []
+        datos = dict(zip(columns, perfil)) if perfil else {}
+
+        with open(os.path.join(app.root_path, "perfil laboral", "perfillaboral.html"), "r", encoding="utf-8") as archivo:
+            contenido = archivo.read()
+        return render_template_string(contenido, perfil=datos)
+    except mysql.connector.Error as error:
+        print("Error al cargar el perfil:", error)
+        return "No se pudo cargar el perfil laboral.", 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+@app.route("/perfil-laboral/completar")
+@app.route("/perfil-laboral/completar perfil.html")
+def completar_perfil():
+    if not session.get("usuario_id"):
+        return redirect("/iniciar-sesion")
+
+    with open(os.path.join(app.root_path, "perfil laboral", "completar perfil.html"), "r", encoding="utf-8") as archivo:
+        contenido = archivo.read()
+    return render_template_string(contenido)
+
+
+@app.route("/guardar-perfil", methods=["POST"])
+def guardar_perfil():
+    usuario_id = session.get("usuario_id")
+    if not usuario_id:
+        return jsonify({"error": "Debes iniciar sesión."}), 401
+
+    datos = request.get_json(silent=True) or {}
+    conexion = None
+    cursor = None
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+
+        cursor.execute("SELECT id FROM perfil_laboral WHERE usuario_id = %s", (usuario_id,))
+        existente = cursor.fetchone()
+
+        valores = (
+            datos.get("telefono") or None,
+            datos.get("ciudad") or None,
+            datos.get("nivelEstudios") or None,
+            datos.get("habilidadesTexto") or None,
+            datos.get("experienciaTexto") or None,
+            datos.get("cursosTexto") or None,
+            datos.get("edad") or None,
+            datos.get("contacto") or None,
+        )
+
+        if existente:
+            cursor.execute("""
+                UPDATE perfil_laboral
+                SET telefono=%s, ciudad=%s, nivel_estudios=%s, habilidades=%s,
+                    experiencia=%s, estudios=%s, edad=%s, medio_contacto=%s
+                WHERE usuario_id=%s
+            """, valores + (usuario_id,))
+        else:
+            cursor.execute("""
+                INSERT INTO perfil_laboral
+                (usuario_id, telefono, ciudad, nivel_estudios, habilidades,
+                 experiencia, estudios, edad, medio_contacto)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            """, (usuario_id,) + valores)
+
+        conexion.commit()
+        return jsonify({"mensaje": "Perfil guardado correctamente"})
+    except mysql.connector.Error as error:
+        if conexion:
+            conexion.rollback()
+        print("Error al guardar perfil:", error)
+        return jsonify({"error": "No se pudo guardar el perfil."}), 500
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+@app.route("/perfil-estatico/<path:archivo>")
+def archivos_perfil(archivo):
+    return send_from_directory(os.path.join(app.root_path, "perfil laboral"), archivo)
 
 
 if __name__ == "__main__":
