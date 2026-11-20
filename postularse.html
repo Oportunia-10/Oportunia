@@ -126,10 +126,21 @@
                             TechSolutions
                         </p>
 
-                        <a href="#" class="apply-button">
-                            Postularse
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
+                      {% if ("Desarrollador Web", "TechSolutions") in postulaciones %}
+    <button type="button" class="apply-button" disabled>
+        Ya te postulaste
+    </button>
+{% else %}
+    <form action="/postularse" method="POST">
+        <input type="hidden" name="puesto" value="Desarrollador Web">
+        <input type="hidden" name="empresa" value="TechSolutions">
+
+        <button type="submit" class="apply-button">
+            Postularse
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </form>
+{% endif %}
 
                     </div>
 
@@ -164,9 +175,21 @@
                             <i class="bi bi-chevron-right"></i>
                         </a>
 
-                        <a href="#" class="apply-button">
-                            Postularse
-                            <i class="bi bi-chevron-right"></i>
+                       {% if ("Analista de Marketing", "Nova Marketing") in postulaciones %}
+    <button type="button" class="apply-button" disabled>
+        Ya te postulaste
+    </button>
+{% else %}
+    <form action="/postularse" method="POST">
+        <input type="hidden" name="puesto" value="Analista de Marketing">
+        <input type="hidden" name="empresa" value="Nova Marketing">
+
+        <button type="submit" class="apply-button">
+            Postularse
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </form>
+{% endif %}
                         </a>
 
                     </div>
@@ -202,10 +225,21 @@
                             <i class="bi bi-chevron-right"></i>
                         </a>
 
-                        <a href="#" class="apply-button">
-                            Postularse
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
+                        {% if ("Atención al Cliente", "Grupo Conecta") in postulaciones %}
+    <button type="button" class="apply-button" disabled>
+        Ya te postulaste
+    </button>
+{% else %}
+    <form action="/postularse" method="POST">
+        <input type="hidden" name="puesto" value="Atención al Cliente">
+        <input type="hidden" name="empresa" value="Grupo Conecta">
+
+        <button type="submit" class="apply-button">
+            Postularse
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </form>
+{% endif %}
 
                     </div>
 
@@ -240,11 +274,21 @@
                             <i class="bi bi-chevron-right"></i>
                         </a>
 
-                        <a href="#" class="apply-button">
-                            Postularse
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
+                        {% if ("Contador/a", "Estudio Álvarez") in postulaciones %}
+    <button type="button" class="apply-button" disabled>
+        Ya te postulaste
+    </button>
+{% else %}
+    <form action="/postularse" method="POST">
+        <input type="hidden" name="puesto" value="Contador/a">
+        <input type="hidden" name="empresa" value="Estudio Álvarez">
 
+        <button type="submit" class="apply-button">
+            Postularse
+            <i class="bi bi-chevron-right"></i>
+        </button>
+    </form>
+{% endif %}
                     </div>
 
                 </article>

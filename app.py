@@ -162,6 +162,77 @@ def home():
         if conexion and conexion.is_connected():
             conexion.close()
 
+@app.route("/postularse.html")
+def postularse():
+    if "usuario_id" not in session:
+        return redirect("/iniciar-sesion.html")
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        "SELECT puesto, empresa FROM postulaciones WHERE usuario_id = %s",
+        (session["usuario_id"],)
+    )
+
+    postulaciones = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    with open("postularse.html", "r", encoding="utf-8") as archivo:
+        contenido = archivo.read()
+
+    return render_template_string(
+        contenido,
+        postulaciones=postulaciones
+    )
+
+@app.route("/postularse", methods=["POST"])
+def guardar_postulacion():
+    if "usuario_id" not in session:
+        return redirect("/iniciar-sesion.html")
+
+    puesto = request.form.get("puesto")
+    empresa = request.form.get("empresa")
+
+    ofertas = {
+        "Desarrollador Web": "TechSolutions",
+        "Analista de Marketing": "Nova Marketing",
+        "Atención al Cliente": "Grupo Conecta",
+        "Contador/a": "Estudio Álvarez"
+    }
+
+    if puesto not in ofertas or ofertas[puesto] != empresa:
+        return redirect("/postularse.html")
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        """
+        SELECT id FROM postulaciones
+        WHERE usuario_id = %s AND puesto = %s AND empresa = %s
+        """,
+        (session["usuario_id"], puesto, empresa)
+    )
+
+    existente = cursor.fetchone()
+
+    if not existente:
+        cursor.execute(
+            """
+            INSERT INTO postulaciones (usuario_id, puesto, empresa)
+            VALUES (%s, %s, %s)
+            """,
+            (session["usuario_id"], puesto, empresa)
+        )
+        conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+    return redirect("/postularse.html")
 
 @app.route("/capacitaciones.html")
 def capacitaciones():
