@@ -463,3 +463,51 @@ body {
     position: relative;
     top: -2px;
 }
+
+
+body.modo-oscuro {
+    color: #f1f5f9;
+    background: linear-gradient(145deg, #111827 0%, #1e293b 50%, #263449 100%);
+}
+
+body.modo-oscuro .ajustes-panel {
+    background: rgba(30, 41, 59, 0.94);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+body.modo-oscuro .ajustes-header i,
+body.modo-oscuro .ajustes-header h1,
+body.modo-oscuro .titulo-configuracion h2 {
+    color: #f1f5f9;
+}
+
+body.modo-oscuro .opcion-ajuste {
+    background: #334155;
+    border-color: #475569;
+    color: #f1f5f9;
+}
+
+body.modo-oscuro .opcion-ajuste:hover {
+    background: #475569;
+    color: #ffffff;
+}
+
+body.modo-oscuro .accesibilidad-panel {
+    background: rgba(51, 65, 85, 0.8);
+}
+
+body.modo-oscuro .opciones-texto label,
+body.modo-oscuro .fila-configuracion small {
+    color: #cbd5e1;
+}
+
+body.modo-oscuro .form-select {
+    background-color: #334155;
+    color: #f1f5f9;
+    border-color: #64748b;
+}
+
+body.modo-oscuro .form-select option {
+    background: #334155;
+    color: #f1f5f9;
+}

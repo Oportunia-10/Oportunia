@@ -144,12 +144,20 @@ def home():
             session.clear()
             return redirect("/iniciar-sesion")
 
+        cursor.execute(
+            "SELECT idioma FROM ajustes WHERE usuario_id = %s",
+            (usuario_id,)
+        )
+        configuracion = cursor.fetchone()
+        idioma = configuracion[0] if configuracion else "Español"
+
         with open(os.path.join(app.root_path, "home.html"), "r", encoding="utf-8") as archivo:
             contenido = archivo.read()
 
         return render_template_string(
             contenido,
-            NOMBRE_USUARIO=usuario[0]
+            NOMBRE_USUARIO=usuario[0],
+            idioma=idioma
         )
 
     except mysql.connector.Error as error:
@@ -161,6 +169,80 @@ def home():
             cursor.close()
         if conexion and conexion.is_connected():
             conexion.close()
+
+
+@app.route("/ajustes.html")
+def ajustes():
+    if "usuario_id" not in session:
+        return redirect("/iniciar-sesion.html")
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        "SELECT notificaciones, modo_oscuro, idioma FROM ajustes WHERE usuario_id = %s",
+        (session["usuario_id"],)
+    )
+
+    configuracion = cursor.fetchone()
+
+    if configuracion is None:
+        cursor.execute(
+            """
+            INSERT INTO ajustes (usuario_id)
+            VALUES (%s)
+            """,
+            (session["usuario_id"],)
+        )
+        conexion.commit()
+
+        configuracion = (1, 0, "Español")
+
+    cursor.close()
+    conexion.close()
+
+    with open("ajustes.html", "r", encoding="utf-8") as archivo:
+        contenido = archivo.read()
+
+    return render_template_string(
+        contenido,
+        notificaciones=configuracion[0],
+        modo_oscuro=configuracion[1],
+        idioma=configuracion[2]
+    )
+
+@app.route("/guardar-ajustes", methods=["POST"])
+def guardar_ajustes():
+    if "usuario_id" not in session:
+        return redirect("/iniciar-sesion.html")
+
+    notificaciones = 1 if request.form.get("notificaciones") == "on" else 0
+    modo_oscuro = 1 if request.form.get("modo_oscuro") == "on" else 0
+    idioma = request.form.get("idioma")
+
+    if idioma not in ["Español", "Inglés", "Portugués"]:
+        idioma = "Español"
+
+    conexion = conectar_db()
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        """
+        UPDATE ajustes
+        SET notificaciones = %s,
+            modo_oscuro = %s,
+            idioma = %s
+        WHERE usuario_id = %s
+        """,
+        (notificaciones, modo_oscuro, idioma, session["usuario_id"])
+    )
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+    return redirect("/ajustes.html")
 
 @app.route("/postularse.html")
 def postularse():

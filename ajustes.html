@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="ajustes.css">
 </head>
 
-<body>
+<body class="{% if modo_oscuro %}modo-oscuro{% endif %}">
 
    <header class="ajustes-navbar">
     <a href="home.html" class="volver-home" aria-label="Volver al inicio">
@@ -35,55 +35,194 @@
 
             <header class="ajustes-header">
                 <i class="bi bi-gear-fill"></i>
-                <h1>Ajustes</h1>
+                <h1>
+                    {% if idioma == "Inglés" %}
+                         Settings
+                    {% elif idioma == "Portugués" %}
+                         Configurações
+                    {% else %}
+                         Ajustes
+                    {% endif %}
+                </h1>
             </header>
 
             <nav class="menu-ajustes" aria-label="Opciones de ajustes">
 
                 <a href="#mi-cuenta" class="opcion-ajuste">
                     <i class="bi bi-person"></i>
-                    <span>Mi Cuenta</span>
+                    <span>{% if idioma == "Inglés" %}
+                                My Account
+                          {% elif idioma == "Portugués" %}
+                                Minha Conta
+                          {% else %}
+                                Mi Cuenta
+                          {% endif %}</span>
                     <i class="bi bi-chevron-right flecha"></i>
                 </a>
 
                 <a href="#accesibilidad" class="opcion-ajuste">
                     <i class="bi bi-universal-access"></i>
-                    <span>Accesibilidad</span>
+                    <span>{% if idioma == "Inglés" %}
+                                Accessibility
+                          {% elif idioma == "Portugués" %}
+                                Acessibilidade
+                          {% else %}
+                                Accesibilidad
+                          {% endif %}</span>
                     <i class="bi bi-chevron-right flecha"></i>
                 </a>
 
                 <a href="#notificaciones" class="opcion-ajuste">
                     <i class="bi bi-bell"></i>
-                    <span>Notificaciones</span>
+                    <span>{% if idioma == "Inglés" %}
+                                Notifications
+                          {% elif idioma == "Portugués" %}
+                                Notificações
+                          {% else %}
+                                Notificaciones
+                          {% endif %}</span>
                     <i class="bi bi-chevron-right flecha"></i>
                 </a>
 
                 <a href="#seguridad" class="opcion-ajuste">
                     <i class="bi bi-shield"></i>
-                    <span>Seguridad</span>
+                    <span>{% if idioma == "Inglés" %}
+                                Security
+                          {% elif idioma == "Portugués" %}
+                                Segurança
+                          {% else %}
+                                Seguridad
+                          {% endif %}</span>
                     <i class="bi bi-chevron-right flecha"></i>
                 </a>
 
                 <a href="#idioma" class="opcion-ajuste">
                     <i class="bi bi-globe"></i>
-                    <span>Idioma</span>
+                    <span>{% if idioma == "Inglés" %}
+                                Language
+                          {% elif idioma == "Portugués" %}
+                                Idioma
+                          {% else %}
+                                Idioma
+                          {% endif %}</span>
                     <i class="bi bi-chevron-right flecha"></i>
                 </a>
 
                 <a href="#cerrar-sesion" class="opcion-ajuste">
                     <i class="bi bi-box-arrow-right"></i>
-                    <span>Cerrar Sesión</span>
+                    <span>{% if idioma == "Inglés" %}
+                                Sign Out
+                          {% elif idioma == "Portugués" %}
+                                Sair
+                          {% else %}
+                                Cerrar Sesión
+                          {% endif %}</span>
                     <i class="bi bi-chevron-right flecha"></i>
                 </a>
 
             </nav>
+
+            <form action="/guardar-ajustes" method="POST" id="form-ajustes">
+
+    <section class="accesibilidad-panel" id="notificaciones">
+
+        <div class="configuracion fila-configuracion">
+            <div class="titulo-configuracion">
+                <i class="bi bi-bell"></i>
+                <h2>{% if idioma == "Inglés" %}
+                            Notifications
+                      {% elif idioma == "Portugués" %}
+                            Notificações
+                      {% else %}
+                            Notificaciones
+                      {% endif %}</h2>
+            </div>
+
+            <label class="switch" aria-label="Activar notificaciones">
+                <input
+                    type="checkbox"
+                    name="notificaciones"
+                    {% if notificaciones %}checked{% endif %}
+                >
+                <span class="slider"></span>
+            </label>
+        </div>
+
+    </section>
+
+    <section class="accesibilidad-panel" id="modo-oscuro">
+
+        <div class="configuracion fila-configuracion">
+            <div class="titulo-configuracion">
+                <i class="bi bi-moon"></i>
+                <h2>{% if idioma == "Inglés" %}
+                            Dark Mode
+                      {% elif idioma == "Portugués" %}
+                            Modo Escuro
+                      {% else %}
+                            Modo oscuro
+                      {% endif %}</h2>
+            </div>
+
+            <label class="switch" aria-label="Activar modo oscuro">
+                <input
+                    type="checkbox"
+                    name="modo_oscuro"
+                    {% if modo_oscuro %}checked{% endif %}
+                >
+                <span class="slider"></span>
+            </label>
+        </div>
+
+    </section>
+
+    <section class="accesibilidad-panel" id="idioma">
+
+        <div class="configuracion">
+            <div class="titulo-configuracion">
+                <i class="bi bi-globe"></i>
+                <h2>{% if idioma == "Inglés" %}
+                            Language
+                      {% elif idioma == "Portugués" %}
+                            Idioma
+                      {% else %}
+                            Idioma
+                      {% endif %}</h2>
+            </div>
+
+            <select name="idioma" class="form-select mt-2">
+                <option value="Español" {% if idioma == "Español" %}selected{% endif %}>Español</option>
+                <option value="Inglés" {% if idioma == "Inglés" %}selected{% endif %}>Inglés</option>
+                <option value="Portugués" {% if idioma == "Portugués" %}selected{% endif %}>Portugués</option>
+            </select>
+        </div>
+
+    </section>
+
+    <button type="submit" class="btn btn-primary mt-3">
+        {% if idioma == "Inglés" %}
+                Save Changes
+          {% elif idioma == "Portugués" %}
+                Salvar Alterações
+          {% else %}
+                Guardar cambios
+          {% endif %}
+    </button>
+
+</form>
 
             <section class="accesibilidad-panel" id="accesibilidad">
 
                 <div class="configuracion">
                     <div class="titulo-configuracion">
                         <i class="bi bi-fonts"></i>
-                        <h2>Tamaño de texto</h2>
+                        <h2>{% if idioma == "Inglés" %}
+                                    Text Size
+                              {% elif idioma == "Portugués" %}
+                                    Tamanho do Texto
+                              {% else %}
+                                    Tamaño de texto
+                              {% endif %}</h2>
                     </div>
 
                     <div class="opciones-texto">
@@ -93,7 +232,13 @@
                                 name="tamano-texto"
                                 value="pequeno"
                             >
-                            <span>Pequeño</span>
+                            <span>{% if idioma == "Inglés" %}
+                                        Small
+                                  {% elif idioma == "Portugués" %}
+                                        Pequeno
+                                  {% else %}
+                                        Pequeño
+                                  {% endif %}</span>
                         </label>
 
                         <label>
@@ -103,7 +248,13 @@
                                 value="mediano"
                                 checked
                             >
-                            <span>Mediano</span>
+                            <span>{% if idioma == "Inglés" %}
+                                        Medium
+                                  {% elif idioma == "Portugués" %}
+                                        Médio
+                                  {% else %}
+                                        Mediano
+                                  {% endif %}</span>
                         </label>
 
                         <label>
@@ -112,7 +263,13 @@
                                 name="tamano-texto"
                                 value="grande"
                             >
-                            <span>Grande</span>
+                            <span>{% if idioma == "Inglés" %}
+                                        Large
+                                  {% elif idioma == "Portugués" %}
+                                        Grande
+                                  {% else %}
+                                        Grande
+                                  {% endif %}</span>
                         </label>
                     </div>
                 </div>
@@ -120,10 +277,16 @@
                 <div class="configuracion fila-configuracion">
                     <div class="titulo-configuracion">
                         <i class="bi bi-circle-half"></i>
-                        <h2>Contraste alto</h2>
+                        <h2>{% if idioma == "Inglés" %}
+                                    High Contrast
+                              {% elif idioma == "Portugués" %}
+                                    Contraste Alto
+                              {% else %}
+                                    Contraste alto
+                              {% endif %}</h2>
                     </div>
 
-                    <label class="switch" aria-label="Contraste alto">
+                    <label class="switch" aria-label="{% if idioma == 'Inglés' %}Read aloud{% elif idioma == 'Portugués' %}Leitura em voz alta{% else %}Lectura en voz alta{% endif %}">
                         <input type="checkbox">
                         <span class="slider"></span>
                     </label>
@@ -132,7 +295,13 @@
                 <div class="configuracion fila-configuracion">
                     <div class="titulo-configuracion">
                         <i class="bi bi-volume-up"></i>
-                        <h2>Lectura en voz alta</h2>
+                        <h2>{% if idioma == "Inglés" %}
+                                    Text-to-Speech
+                              {% elif idioma == "Portugués" %}
+                                    Leitura em Voz Alta
+                              {% else %}
+                                    Lectura en voz alta
+                              {% endif %}</h2>
                     </div>
 
                     <label class="switch" aria-label="Lectura en voz alta">
@@ -144,10 +313,16 @@
                 <div class="configuracion fila-configuracion">
                     <div class="titulo-configuracion">
                         <i class="bi bi-compass"></i>
-                        <h2>Navegación simple</h2>
+                        <h2>{% if idioma == "Inglés" %}
+                                    Simple Navigation
+                              {% elif idioma == "Portugués" %}
+                                    Navegação Simples
+                              {% else %}
+                                    Navegación simple
+                              {% endif %}</h2>
                     </div>
 
-                    <label class="switch" aria-label="Navegación simple">
+                    <label class="switch" aria-label="{% if idioma == 'Inglés' %}Simple Navigation{% elif idioma == 'Portugués' %}Navegação Simples{% else %}Navegación simple{% endif %}">
                         <input type="checkbox" checked>
                         <span class="slider"></span>
                     </label>
@@ -157,12 +332,18 @@
                     <div class="titulo-configuracion">
                         <i class="bi bi-arrows-fullscreen"></i>
                         <div>
-                            <h2>Agrandar botones</h2>
+                            <h2>{% if idioma == "Inglés" %}
+                                        Enlarge Buttons
+                                  {% elif idioma == "Portugués" %}
+                                        Aumentar Botões
+                                  {% else %}
+                                        Agrandar botones
+                                  {% endif %}</h2>
                             <small>(+50%)</small>
                         </div>
                     </div>
 
-                    <label class="switch" aria-label="Agrandar botones">
+                    <label class="switch" aria-label="{% if idioma == 'Inglés' %}Enlarge Buttons{% elif idioma == 'Portugués' %}Aumentar Botões{% else %}Agrandar botones{% endif %}">
                         <input type="checkbox" checked>
                         <span class="slider"></span>
                     </label>
