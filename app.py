@@ -1,4 +1,5 @@
-﻿from flask import Flask, request, redirect, send_from_directory, session, render_template_string
+﻿
+from flask import Flask, request, redirect, send_from_directory, session, render_template_string
 import mysql.connector
 from mysql.connector import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -211,6 +212,7 @@ def ajustes():
         idioma=configuracion[2]
     )
 
+
 @app.route("/guardar-ajustes", methods=["POST"])
 def guardar_ajustes():
     if "usuario_id" not in session:
@@ -244,31 +246,65 @@ def guardar_ajustes():
 
     return redirect("/ajustes.html")
 
+
 @app.route("/postularse.html")
 def postularse():
     if "usuario_id" not in session:
         return redirect("/iniciar-sesion.html")
 
-    conexion = conectar_db()
-    cursor = conexion.cursor()
+    conexion = None
+    cursor = None
 
-    cursor.execute(
-        "SELECT puesto, empresa FROM postulaciones WHERE usuario_id = %s",
-        (session["usuario_id"],)
-    )
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
 
-    postulaciones = cursor.fetchall()
+        cursor.execute(
+            """
+            SELECT id, puesto, empresa
+            FROM postulaciones
+            WHERE usuario_id = %s
+            """,
+            (session["usuario_id"],)
+        )
 
-    cursor.close()
-    conexion.close()
+        resultados = cursor.fetchall()
 
-    with open("postularse.html", "r", encoding="utf-8") as archivo:
-        contenido = archivo.read()
+        # Mantener las parejas puesto/empresa que utiliza
+        # actualmente postularse.html.
+        postulaciones = [
+            (fila[1], fila[2]) for fila in resultados
+        ]
 
-    return render_template_string(
-        contenido,
-        postulaciones=postulaciones
-    )
+        # Guardar también el ID de cada postulación
+        # para poder cancelarla desde la pantalla.
+        ids_postulaciones = {
+            (fila[1], fila[2]): fila[0] for fila in resultados
+        }
+
+        with open(
+            os.path.join(app.root_path, "postularse.html"),
+            "r",
+            encoding="utf-8"
+        ) as archivo:
+            contenido = archivo.read()
+
+        return render_template_string(
+            contenido,
+            postulaciones=postulaciones,
+            ids_postulaciones=ids_postulaciones
+        )
+
+    except mysql.connector.Error as error:
+        print("Error al cargar postulaciones:", error)
+        return "No se pudieron cargar las postulaciones."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
 
 @app.route("/postularse", methods=["POST"])
 def guardar_postulacion():
@@ -288,33 +324,82 @@ def guardar_postulacion():
     if puesto not in ofertas or ofertas[puesto] != empresa:
         return redirect("/postularse.html")
 
-    conexion = conectar_db()
-    cursor = conexion.cursor()
+    conexion = None
+    cursor = None
 
-    cursor.execute(
-        """
-        SELECT id FROM postulaciones
-        WHERE usuario_id = %s AND puesto = %s AND empresa = %s
-        """,
-        (session["usuario_id"], puesto, empresa)
-    )
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
 
-    existente = cursor.fetchone()
-
-    if not existente:
         cursor.execute(
             """
-            INSERT INTO postulaciones (usuario_id, puesto, empresa)
-            VALUES (%s, %s, %s)
+            SELECT id FROM postulaciones
+            WHERE usuario_id = %s AND puesto = %s AND empresa = %s
             """,
             (session["usuario_id"], puesto, empresa)
         )
+
+        existente = cursor.fetchone()
+
+        if not existente:
+            cursor.execute(
+                """
+                INSERT INTO postulaciones (usuario_id, puesto, empresa)
+                VALUES (%s, %s, %s)
+                """,
+                (session["usuario_id"], puesto, empresa)
+            )
+            conexion.commit()
+
+        return redirect("/postularse.html")
+
+    except mysql.connector.Error as error:
+        print("Error al guardar postulación:", error)
+        return "No se pudo guardar la postulación."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
+
+# NUEVA FUNCIONALIDAD: CANCELAR POSTULACIÓN
+@app.route("/cancelar-postulacion/<int:postulacion_id>", methods=["POST"])
+def cancelar_postulacion(postulacion_id):
+
+    if "usuario_id" not in session:
+        return redirect("/iniciar-sesion")
+
+    conexion = None
+    cursor = None
+
+    try:
+        conexion = conectar_db()
+        cursor = conexion.cursor()
+
+        cursor.execute(
+            """
+            DELETE FROM postulaciones
+            WHERE id = %s AND usuario_id = %s
+            """,
+            (postulacion_id, session["usuario_id"])
+        )
+
         conexion.commit()
 
-    cursor.close()
-    conexion.close()
+        return redirect("/postularse.html")
 
-    return redirect("/postularse.html")
+    except mysql.connector.Error as error:
+        print("Error al cancelar postulación:", error)
+        return "No se pudo cancelar la postulación."
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conexion and conexion.is_connected():
+            conexion.close()
+
 
 @app.route("/capacitaciones.html")
 def capacitaciones():
@@ -385,6 +470,7 @@ def capacitaciones():
         if conexion and conexion.is_connected():
             conexion.close()
 
+
 @app.route("/capacitaciones/<int:curso_id>/comenzar", methods=["POST"])
 def comenzar_capacitacion(curso_id):
     usuario_id = session.get("usuario_id")
@@ -423,6 +509,7 @@ def comenzar_capacitacion(curso_id):
         if conexion and conexion.is_connected():
             conexion.close()
 
+
 @app.route("/capacitaciones/<int:curso_id>/progreso", methods=["POST"])
 def actualizar_progreso(curso_id):
     usuario_id = session.get("usuario_id")
@@ -432,7 +519,7 @@ def actualizar_progreso(curso_id):
 
     try:
         progreso = int(request.form.get("progreso", -1))
-    except ValueError:
+    except (ValueError, TypeError):
         return "El progreso debe ser un número."
 
     if progreso < 0 or progreso > 100:
@@ -490,6 +577,7 @@ def actualizar_progreso(curso_id):
             cursor.close()
         if conexion and conexion.is_connected():
             conexion.close()
+
 
 @app.route("/<path:archivo>")
 def mostrar_archivos(archivo):
